@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
-import { BusinessError } from '../../errors/business.js';
-import { s3 } from '../../lib/s3.js';
+import { BusinessError } from '../../utils/business.js';
+import { s3 } from '../../libraries/s3.js';
 
 export class AdvertisementsService {
   #model;

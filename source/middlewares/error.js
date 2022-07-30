@@ -1,4 +1,4 @@
-import { BusinessError } from '../errors/business.js';
+import { BusinessError } from '../utils/business.js';
 import { HttpError } from '../utils/http.js';
 
 export function error(error, request, response, next) {

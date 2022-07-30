@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { adapt } from '../../lib/express.js';
-import { upload } from '../../lib/multer.js';
+import { adapt } from '../../libraries/express.js';
+import { upload } from '../../libraries/multer.js';
 import { AdvertisementsController } from './controller.js';
 import { Advertisement } from './model.js';
 import { AdvertisementsService } from './service.js';
