@@ -3,6 +3,15 @@ import { Advertisement } from './model.js';
 import { BusinessError } from '../../errors/business.js';
 import { s3 } from '../../lib/s3.js';
 
+export async function index({ limit, skip }) {
+  const [advertisements, total] = await Promise.all([
+    Advertisement.find().limit(limit).skip(skip),
+    Advertisement.countDocuments(),
+  ]);
+
+  return { advertisements, total };
+}
+
 export async function create({ title, description, price, image_url }) {
   if (title.length > 80) {
     throw new BusinessError('title must be less than 80 characters');

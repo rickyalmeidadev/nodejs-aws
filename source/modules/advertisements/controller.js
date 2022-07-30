@@ -1,5 +1,17 @@
 import { BadRequestError } from '../../errors/http.js';
+import { createPaginationArguments } from '../../utils/query.js';
 import * as AdvertisementsService from './service.js';
+
+export async function index(request, response) {
+  const { limit, skip } = createPaginationArguments({
+    page: request.query.page,
+    per_page: request.query.per_page,
+  });
+
+  const { advertisements, total } = await AdvertisementsService.index({ limit, skip });
+
+  return response.set('X-Total-Count', total).status(200).json(advertisements);
+}
 
 export async function create(request, response) {
   for (const key of ['title', 'description', 'price', 'image_url']) {
