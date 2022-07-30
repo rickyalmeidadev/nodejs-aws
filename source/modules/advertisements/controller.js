@@ -29,5 +29,17 @@ export async function create(request, response) {
 }
 
 export async function image(request, response) {
-  return response.status(201).json({ image_url: request.file.location });
+  if (!request.file) {
+    throw new BadRequestError('image is required');
+  }
+
+  const extension = request.file.mimetype.split('/').at(1);
+
+  if (['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif', 'svg'].includes(extension) === false) {
+    throw new BadRequestError('invalid file type');
+  }
+
+  const url = await AdvertisementsService.image(request.file);
+
+  return response.status(201).json({ image_url: url });
 }
