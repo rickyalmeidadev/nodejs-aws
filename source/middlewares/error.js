@@ -1,5 +1,5 @@
 import { BusinessError } from '../errors/business.js';
-import { HttpError } from '../errors/http.js';
+import { HttpError } from '../utils/http.js';
 
 export function error(error, request, response, next) {
   if (process.env.NODE_ENV === 'development') {

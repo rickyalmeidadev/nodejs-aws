@@ -1,9 +1,16 @@
 import { Router } from 'express';
+import { adapt } from '../../lib/express.js';
 import { upload } from '../../lib/multer.js';
-import * as AdvertisementsController from './controller.js';
+import { AdvertisementsController } from './controller.js';
+import { Advertisement } from './model.js';
+import { AdvertisementsService } from './service.js';
 
 export const router = new Router();
 
-router.get('/', AdvertisementsController.index);
-router.post('/', AdvertisementsController.create);
-router.post('/image', upload.single('image'), AdvertisementsController.image);
+const model = Advertisement;
+const service = new AdvertisementsService(model);
+const controller = new AdvertisementsController(service);
+
+router.get('/', adapt({ controller, method: 'index' }));
+router.post('/', adapt({ controller, method: 'create' }));
+router.post('/image', upload.single('image'), adapt({ controller, method: 'image' }));
