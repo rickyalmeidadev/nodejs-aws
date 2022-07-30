@@ -12,5 +12,6 @@ const service = new AdvertisementsService(model);
 const controller = new AdvertisementsController(service);
 
 router.get('/', adapt({ controller, method: 'index' }));
+router.get('/:id', adapt({ controller, method: 'show' }));
 router.post('/', adapt({ controller, method: 'create' }));
-router.post('/image', upload.single('image'), adapt({ controller, method: 'image' }));
+router.post('/image', upload.single('image'), adapt({ controller, method: 'uploadImage' }));

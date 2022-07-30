@@ -1,4 +1,4 @@
-import { BadRequestError, CreatedResponse, OKResponse } from '../../utils/http.js';
+import { BadRequestError, CreatedResponse, NotFoundError, OKResponse } from '../../utils/http.js';
 import { createPaginationArguments, createSortArguments } from '../../utils/query.js';
 
 export class AdvertisementsController {
@@ -16,9 +16,19 @@ export class AdvertisementsController {
 
     const { sort } = createSortArguments({ sort_by: request.query.sort_by });
 
-    const { advertisements, total } = await this.#service.index({ limit, skip, sort });
+    const { advertisements, total } = await this.#service.find({ limit, skip, sort });
 
     return new OKResponse(advertisements, { 'X-Total-Count': total });
+  }
+
+  async show(request) {
+    const advertisement = await this.#service.findById(request.params.id);
+
+    if (advertisement === null) {
+      throw new NotFoundError('advertisement not found');
+    }
+
+    return new OKResponse(advertisement);
   }
 
   async create(request) {
@@ -48,7 +58,7 @@ export class AdvertisementsController {
     return new CreatedResponse(advertisement);
   }
 
-  async image(request) {
+  async uploadImage(request) {
     if (!request.file) {
       throw new BadRequestError('image is required');
     }
@@ -59,7 +69,7 @@ export class AdvertisementsController {
       throw new BadRequestError('invalid file type');
     }
 
-    const url = await this.#service.image(request.file);
+    const url = await this.#service.uploadImageToS3(request.file);
 
     return new CreatedResponse({ image_url: url });
   }

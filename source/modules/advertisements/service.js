@@ -9,13 +9,19 @@ export class AdvertisementsService {
     this.#model = model;
   }
 
-  async index({ limit, skip, sort }) {
+  async find({ limit, skip, sort }) {
     const [advertisements, total] = await Promise.all([
       this.#model.find({}).sort(sort).skip(skip).limit(limit).lean(),
       this.#model.countDocuments(),
     ]);
 
     return { advertisements, total };
+  }
+
+  async findById(id) {
+    const advertisement = await this.#model.findById(id).lean();
+
+    return advertisement;
   }
 
   async create({ title, description, price, image_url }) {
@@ -41,7 +47,7 @@ export class AdvertisementsService {
     return advertisement;
   }
 
-  async image(file) {
+  async uploadImageToS3(file) {
     const FIVE_MEGABYTES = 5242880;
 
     if (file.size > FIVE_MEGABYTES) {
