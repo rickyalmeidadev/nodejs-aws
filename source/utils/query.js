@@ -4,3 +4,24 @@ export function createPaginationArguments({ page, per_page }) {
 
   return { limit, skip };
 }
+
+export function createSortArguments({ sort_by }) {
+  const DEFAULT_ARGUMENTS = { sort: {} };
+
+  if (typeof sort_by !== 'string') {
+    return DEFAULT_ARGUMENTS;
+  }
+
+  const [key, direction] = sort_by.split(':');
+
+  const directions = new Map([
+    ['asc', 1],
+    ['desc', -1],
+  ]);
+
+  if (key.trim() === '' || directions.has(direction) === false) {
+    return DEFAULT_ARGUMENTS;
+  }
+
+  return { sort: { [key]: directions.get(direction) } };
+}

@@ -3,9 +3,9 @@ import { Advertisement } from './model.js';
 import { BusinessError } from '../../errors/business.js';
 import { s3 } from '../../lib/s3.js';
 
-export async function index({ limit, skip }) {
+export async function index({ limit, skip, sort }) {
   const [advertisements, total] = await Promise.all([
-    Advertisement.find().limit(limit).skip(skip),
+    Advertisement.find().sort(sort).limit(limit).skip(skip),
     Advertisement.countDocuments(),
   ]);
 

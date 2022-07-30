@@ -1,5 +1,5 @@
 import { BadRequestError } from '../../errors/http.js';
-import { createPaginationArguments } from '../../utils/query.js';
+import { createPaginationArguments, createSortArguments } from '../../utils/query.js';
 import * as AdvertisementsService from './service.js';
 
 export async function index(request, response) {
@@ -8,7 +8,9 @@ export async function index(request, response) {
     per_page: request.query.per_page,
   });
 
-  const { advertisements, total } = await AdvertisementsService.index({ limit, skip });
+  const { sort } = createSortArguments({ sort_by: request.query.sort_by });
+
+  const { advertisements, total } = await AdvertisementsService.index({ limit, skip, sort });
 
   return response.set('X-Total-Count', total).status(200).json(advertisements);
 }
