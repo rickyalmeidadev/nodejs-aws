@@ -6,7 +6,7 @@ export class Response {
   }
 }
 
-export class OKResponse extends Response {
+export class OkResponse extends Response {
   constructor(body, headers) {
     super(200, body, headers);
   }

@@ -1,12 +1,13 @@
 import crypto from 'node:crypto';
 import { BusinessError } from '../../utils/business.js';
-import { s3 } from '../../libraries/s3.js';
 
 export class AdvertisementsService {
   #model;
+  #storage;
 
-  constructor(model) {
+  constructor(model, storage) {
     this.#model = model;
+    this.#storage = storage;
   }
 
   async find({ limit, skip, sort }) {
@@ -58,15 +59,12 @@ export class AdvertisementsService {
     const extension = file.mimetype.split('/').at(1);
     const filename = `${id}.${extension}`;
 
-    const params = {
-      Bucket: process.env.AWS_STORAGE_BUCKET_NAME,
-      Key: filename,
-      Body: file.buffer,
-      ContentType: file.mimetype,
-    };
+    const url = await this.#storage.save({
+      key: filename,
+      body: file.buffer,
+      contentType: file.mimetype,
+    });
 
-    const response = await s3.upload(params).promise();
-
-    return response.Location;
+    return url;
   }
 }

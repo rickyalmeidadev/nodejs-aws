@@ -1,4 +1,4 @@
-import { BadRequestError, CreatedResponse, NotFoundError, OKResponse } from '../../utils/http.js';
+import { BadRequestError, CreatedResponse, NotFoundError, OkResponse } from '../../utils/http.js';
 import { createPaginationArguments, createSortArguments } from '../../utils/query.js';
 
 export class AdvertisementsController {
@@ -18,7 +18,7 @@ export class AdvertisementsController {
 
     const { advertisements, total } = await this.#service.find({ limit, skip, sort });
 
-    return new OKResponse(advertisements, { 'X-Total-Count': total });
+    return new OkResponse(advertisements, { 'X-Total-Count': total });
   }
 
   async show(request) {
@@ -28,7 +28,7 @@ export class AdvertisementsController {
       throw new NotFoundError('advertisement not found');
     }
 
-    return new OKResponse(advertisement);
+    return new OkResponse(advertisement);
   }
 
   async create(request) {
