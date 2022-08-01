@@ -11,4 +11,4 @@ app.use(express.json());
 app.use(Routes.router);
 app.use(Middlewares.error);
 
-app.listen(3000);
+app.listen(process.env.PORT);

@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon source/index.js"
+    "start": "node source/index.js"
   },
   "author": "Ricky Almeida",
   "license": "ISC",
